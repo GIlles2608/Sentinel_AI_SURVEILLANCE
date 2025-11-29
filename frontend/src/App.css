@@ -1,0 +1,99 @@
+/**
+ * Styles globaux de l'application
+ */
+
+/* Reset global */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Root et body */
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #0f172a;
+  color: #f1f5f9;
+}
+
+/* App container */
+.app {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Pages placeholder (pour pages non implémentées) */
+.page-placeholder {
+  padding: 48px;
+  color: #cbd5e1;
+}
+
+.page-placeholder--center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  gap: 16px;
+}
+
+.page-placeholder h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 8px;
+}
+
+.page-placeholder p {
+  font-size: 16px;
+  color: #94a3b8;
+}
+
+.page-placeholder button {
+  margin-top: 16px;
+  padding: 12px 24px;
+  background-color: #3b82f6;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.page-placeholder button:hover {
+  background-color: #2563eb;
+}
+
+/* Scrollbar personnalisée globale */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}

@@ -1,0 +1,59 @@
+# Configuration de détection Sentinelle AI
+
+# Modèle YOLO
+yolo:
+  model: "yolov8n-pose.pt"  # Modèle avec pose estimation (17 keypoints)
+  confidence_threshold: 0.25  # Réduit à 25% pour voir plus de détections
+  iou_threshold: 0.45
+  pose_confidence_threshold: 0.3  # Confiance minimale pour keypoints
+
+# Configuration Pose Estimation
+pose_estimation:
+  enabled: true
+  keypoints_format: "coco"  # 17 keypoints COCO format
+  draw_skeleton: true  # Dessiner le squelette sur l'interface
+  skeleton_color: [0, 255, 0]  # Vert (BGR)
+  keypoint_radius: 4
+  line_thickness: 2
+
+# Détection d'intrusion
+intrusion_detection:
+  enabled: true
+  target_classes: ["person"]  # Classes à surveiller
+  alert_cooldown: 30  # secondes entre alertes pour la même zone
+
+# Détection d'objets abandonnés/volés
+object_tracking:
+  enabled: true
+  tracked_classes: ["backpack", "handbag", "suitcase", "laptop"]
+  stationary_time_threshold: 60  # secondes avant alerte objet abandonné
+  disappearance_alert: true
+
+# Détection de chutes
+fall_detection:
+  enabled: true
+  aspect_ratio_threshold: 1.5  # ratio hauteur/largeur pour détecter position couchée
+  motion_threshold: 50  # pixels de mouvement soudain
+  confirmation_frames: 15  # frames pour confirmer chute
+
+# Analyse de comportements suspects
+behavior_analysis:
+  enabled: true
+  loitering_time: 120  # secondes de stationnement avant alerte
+  erratic_movement_threshold: 100  # variation de vitesse/direction
+  crowd_size_alert: 5  # nombre de personnes pour alerte regroupement
+
+# Enregistrement
+recording:
+  enabled: true
+  pre_event_buffer: 5  # secondes avant événement
+  post_event_duration: 10  # secondes après événement
+  format: "mp4"
+  codec: "mp4v"
+
+# Alertes
+alerts:
+  desktop_notifications: true
+  save_event_images: true
+  log_events: true
+  web_dashboard: true

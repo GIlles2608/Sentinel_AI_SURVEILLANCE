@@ -1,0 +1,43 @@
+[
+  {
+    "ip": "192.168.1.1",
+    "open_ports": [
+      80
+    ],
+    "status": "discovered",
+    "manufacturer": "Unknown",
+    "model": "IP Camera",
+    "protocol": "HTTP"
+  },
+  {
+    "ip": "192.168.1.18",
+    "open_ports": [
+      8080
+    ],
+    "status": "discovered",
+    "manufacturer": "Unknown",
+    "model": "IP Camera",
+    "protocol": "HTTP"
+  },
+  {
+    "ip": "192.168.1.29",
+    "open_ports": [
+      554,
+      80
+    ],
+    "status": "discovered",
+    "manufacturer": "Generic RTSP",
+    "model": "IP Camera",
+    "protocol": "RTSP"
+  },
+  {
+    "ip": "192.168.1.36",
+    "open_ports": [
+      80
+    ],
+    "status": "discovered",
+    "manufacturer": "Unknown",
+    "model": "IP Camera",
+    "protocol": "HTTP"
+  }
+]

@@ -1,0 +1,43 @@
+# Configuration IMOU pour Sentinelle AI
+# Intégration avec l'API IMOU Life pour le contrôle avancé des caméras
+
+# Activer ou désactiver l'intégration IMOU
+enabled: true
+
+# Credentials API IMOU
+# Obtenez vos credentials sur: https://open.imou.com/
+app_id: "lccf192702b5b14d7a"
+app_secret: "bf2361caa650418a9179b43f04be80"
+
+# URL de l'API IMOU
+# Options disponibles:
+#   - openapi-sg.easy4ip.com  (Singapore)
+#   - openapi-or.easy4ip.com  (Oregon, USA)
+#   - openapi-fk.easy4ip.com  (Frankfurt, Germany)
+#   - openapi.lechange.cn     (China)
+api_url: "openapi-sg.easy4ip.com"
+
+# Options de streaming
+stream:
+  # Résolution par défaut (HD ou SD)
+  default_resolution: "SD"
+
+  # Protocole par défaut (https ou http)
+  default_protocol: "https"
+
+# Options PTZ
+ptz:
+  # Durée par défaut du mouvement PTZ en millisecondes
+  default_duration: 500
+
+# Options de snapshot
+snapshot:
+  # Temps d'attente pour le snapshot en secondes
+  wait_time: 3
+
+# Mapping des caméras IMOU vers les caméras Sentinelle AI
+# Format: camera_id_sentinelle: device_id_imou
+camera_mapping:
+  # Exemple:
+  # imou_01: "ABCD1234567890"
+  # imou_02: "EFGH0987654321"

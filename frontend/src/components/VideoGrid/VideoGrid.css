@@ -1,0 +1,397 @@
+/**
+ * Styles pour le composant VideoGrid
+ */
+
+/* Container principal de la grille */
+.video-grid {
+  /* Flexbox vertical */
+  display: flex;
+  flex-direction: column;
+
+  /* Prendre toute la hauteur disponible */
+  height: 100%;
+  width: 100%;
+
+  /* Fond sombre */
+  background-color: var(--bg-secondary);
+
+  /* Gap entre toolbar et grille */
+  gap: 16px;
+
+  /* Padding */
+  padding: 16px;
+
+  /* Débordement caché */
+  overflow: hidden;
+}
+
+/* Barre d'outils en haut */
+.video-grid__toolbar {
+  /* Flexbox horizontal */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  /* Padding et bordure */
+  padding: 12px 16px;
+  border-radius: 8px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+}
+
+/* Infos (nombre de caméras, layout) */
+.video-grid__info {
+  /* Flexbox avec gap */
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+/* Compteur de caméras */
+.video-grid__count {
+  /* Typographie */
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Info layout actuel */
+.video-grid__layout-info {
+  /* Typographie */
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+/* Container des boutons de layout */
+.video-grid__layout-buttons {
+  /* Flexbox avec gap */
+  display: flex;
+  gap: 8px;
+}
+
+/* Bouton de layout */
+.video-grid__layout-button {
+  /* Padding */
+  padding: 8px 12px;
+
+  /* Bordure et fond */
+  background-color: var(--border-color);
+  border: 1px solid #475569;
+  border-radius: 6px;
+
+  /* Typographie */
+  color: var(--text-secondary);
+  font-size: 14px;
+
+  /* Curseur */
+  cursor: pointer;
+
+  /* Transition */
+  transition: all 0.2s ease;
+}
+
+/* Hover sur bouton de layout */
+.video-grid__layout-button:hover {
+  background-color: #475569;
+  border-color: #64748b;
+}
+
+/* Bouton de layout actif */
+.video-grid__layout-button.active {
+  background-color: var(--accent-blue);
+  border-color: #2563eb;
+  color: #fff;
+}
+
+/* Container de la grille */
+.video-grid__container {
+  /* CSS Grid pour layout flexible */
+  display: grid;
+
+  /* Gap entre les items */
+  gap: 16px;
+
+  /* Prendre l'espace restant */
+  flex: 1;
+
+  /* Débordement avec scroll */
+  overflow: auto;
+
+  /* Padding pour éviter que le contenu touche les bords */
+  padding: 4px;
+}
+
+/* Layout 1x1 (une seule caméra) */
+.video-grid--1x1 {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+/* Layout 2x2 (4 caméras max) */
+.video-grid--2x2 {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+/* Layout 3x3 (9 caméras max) */
+.video-grid--3x3 {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+
+/* Layout 4x4 (16 caméras max) */
+.video-grid--4x4 {
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+}
+
+/* Item individuel de la grille */
+.video-grid__item {
+  /* Position relative pour indicator */
+  position: relative;
+
+  /* Dimensions minimum */
+  min-height: 200px;
+
+  /* Bordure et arrondis */
+  border-radius: 8px;
+  overflow: hidden;
+
+  /* Curseur pointer pour indiquer cliquable */
+  cursor: pointer;
+
+  /* Transition pour effet focus */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover sur item */
+.video-grid__item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+/* Item en focus (sélectionné) */
+.video-grid__item--focused {
+  /* Border lumineux */
+  outline: 3px solid var(--accent-blue);
+  outline-offset: -3px;
+
+  /* Z-index plus élevé */
+  z-index: 20;
+
+  /* Légèrement agrandi */
+  transform: scale(1.05);
+}
+
+/* Indicateur de focus */
+.video-grid__focus-indicator {
+  /* Position absolue en haut à droite */
+  position: absolute;
+  top: 8px;
+  right: 8px;
+
+  /* Style badge */
+  padding: 4px 8px;
+  background-color: rgba(59, 130, 246, 0.9);
+  border-radius: 4px;
+
+  /* Typographie */
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+
+  /* Au-dessus de la vidéo */
+  z-index: 30;
+
+  /* Pointer events none pour ne pas bloquer les clics */
+  pointer-events: none;
+}
+
+/* Item vide (placeholder) */
+.video-grid__item--empty {
+  /* Fond transparent avec bordure */
+  background-color: transparent;
+  border: 2px dashed var(--border-color);
+
+  /* Pas de curseur pointer */
+  cursor: default;
+
+  /* Pas d'effet hover */
+  transition: none;
+}
+
+.video-grid__item--empty:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Contenu du slot vide */
+.video-grid__empty-slot {
+  /* Centrer le contenu */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  /* Prendre toute la hauteur */
+  height: 100%;
+
+  /* Couleur du texte */
+  color: #64748b;
+}
+
+/* Icône du slot vide */
+.video-grid__empty-slot-icon {
+  font-size: 32px;
+  opacity: 0.5;
+}
+
+/* Texte du slot vide */
+.video-grid__empty-slot-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* État vide (aucune caméra) */
+.video-grid--empty {
+  /* Centrer le contenu */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-grid__empty-state {
+  /* Centrer le texte */
+  text-align: center;
+
+  /* Flexbox vertical */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+
+  /* Couleur */
+  color: var(--text-tertiary);
+
+  /* Padding */
+  padding: 48px;
+}
+
+/* Icône état vide */
+.video-grid__empty-icon {
+  font-size: 64px;
+  opacity: 0.5;
+}
+
+/* Titre état vide */
+.video-grid__empty-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* Description état vide */
+.video-grid__empty-description {
+  margin: 0;
+  font-size: 16px;
+  color: #64748b;
+}
+
+/* Responsive: tablettes */
+@media (max-width: 1024px) {
+  /* Réduire gap sur tablettes */
+  .video-grid__container {
+    gap: 12px;
+  }
+
+  /* Forcer 2x2 max sur tablettes pour 3x3 */
+  .video-grid--3x3 {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 1fr;
+  }
+
+  /* Forcer 2x2 sur tablettes pour 4x4 */
+  .video-grid--4x4 {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 1fr;
+  }
+}
+
+/* Responsive: mobiles */
+@media (max-width: 640px) {
+  /* Réduire padding */
+  .video-grid {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  /* Toolbar vertical sur mobile */
+  .video-grid__toolbar {
+    flex-direction: column;
+    gap: 12px;
+    padding: 8px;
+  }
+
+  /* Info en colonne */
+  .video-grid__info {
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  /* Boutons layout en ligne */
+  .video-grid__layout-buttons {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  /* Réduire gap grille */
+  .video-grid__container {
+    gap: 8px;
+  }
+
+  /* Forcer 1 colonne sur mobile */
+  .video-grid--2x2,
+  .video-grid--3x3,
+  .video-grid--4x4 {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+  }
+
+  /* Réduire taille min */
+  .video-grid__item {
+    min-height: 150px;
+  }
+}
+
+/* Smooth scrolling */
+.video-grid__container {
+  scroll-behavior: smooth;
+
+  /* Scrollbar personnalisée (Chrome/Safari) */
+  scrollbar-width: thin;
+  scrollbar-color: #475569 var(--bg-card);
+}
+
+.video-grid__container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.video-grid__container::-webkit-scrollbar-track {
+  background: var(--bg-card);
+  border-radius: 4px;
+}
+
+.video-grid__container::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 4px;
+}
+
+.video-grid__container::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}

@@ -1,0 +1,171 @@
+# ================================================================================
+# Sentinel IA v2.0 - .gitignore
+# ================================================================================
+
+# Python
+# ------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.pyc
+*.pyo
+
+# Virtual environments
+# --------------------
+venv/
+ENV/
+env/
+.venv/
+backend_fastapi/venv/
+backend_flask/venv/
+
+# Build and distribution
+# ----------------------
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDE and editors
+# ---------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# OS specific
+# -----------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+# ----
+logs/
+shared/logs/
+*.log
+*.log.*
+
+# Databases (SQLite v1)
+# ---------------------
+data/*.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
+shared/data/*.db
+shared/data/*.db-journal
+shared/data/*.db-wal
+shared/data/*.db-shm
+
+# Docker volumes and data
+# -----------------------
+docker/clickhouse/data/
+docker/minio/data/
+data/clickhouse/
+data/minio/
+shared/data/clickhouse/
+shared/data/minio/
+
+# Generated data
+# --------------
+data/events/
+data/recordings/
+backups/
+*.backup
+
+# Environment variables (IMPORTANT - contains passwords!)
+# --------------------------------------------------------
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# AI Models (YOLO)
+# ----------------
+*.pt
+*.onnx
+*.trt
+*.engine
+models/*.pt
+shared/models/*.pt
+!models/README.md
+!shared/models/README.md
+
+# Media files (exclude from git)
+# -------------------------------
+*.jpg
+*.jpeg
+*.png
+*.mp4
+*.avi
+*.mov
+!src/web/static/images/*.jpg
+!src/web/static/images/*.png
+
+# Temporary files
+# ---------------
+*.tmp
+*.bak
+*.swp
+*.cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Test files
+# ----------
+test_*.py
+*_test.py
+
+# Jupyter Notebooks
+# -----------------
+.ipynb_checkpoints/
+*.ipynb
+
+# Legacy files (kept for reference)
+# ----------------------------------
+legacy/
+backend_flask/
+archive/
+
+# Documentation builds
+# --------------------
+docs/_build/
+docs/.doctrees/
+site/
+
+# Learning documentation (personal notes)
+# ----------------------------------------
+Guides/react-learning/
+
+# Frontend (Node.js)
+# ------------------
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/.turbo/
+.pnpm-store/
+
+# Configuration (uncomment to ignore sensitive configs)
+# ------------------------------------------------------
+# config/cameras.yaml
+# config/imou.yaml
+# config/detection_config.yaml

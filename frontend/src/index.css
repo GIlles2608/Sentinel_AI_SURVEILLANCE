@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Fonts */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, 'Cantarell', 'Fira Sans', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Sentinel 2.0 Design System */
+  --bg-primary: #000000;
+  --bg-secondary: #0A0A0A;
+  --bg-tertiary: #1A1A1A;
+  --bg-card: #0F0F0F;
+  --border-color: #2A2A2A;
+  --border-subtle: #1A1A1A;
+
+  /* Accent Colors */
+  --accent-blue: #0EA5E9;
+  --accent-blue-dark: #0284C7;
+  --accent-blue-light: #38BDF8;
+  --accent-violet: #8B5CF6;
+  --accent-violet-dark: #7C3AED;
+  --accent-violet-light: #A78BFA;
+
+  /* Text Colors */
+  --text-primary: #FFFFFF;
+  --text-secondary: #CCCCCC;
+  --text-tertiary: #888888;
+  --text-muted: #666666;
+
+  /* Status Colors */
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  --info: #3B82F6;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition: 300ms ease;
+  --transition-slow: 500ms ease;
+
+  color-scheme: dark;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+/* Custom scrollbar - Sentinel 2.0 Style */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-blue);
+}
+
+/* Video player styles */
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
