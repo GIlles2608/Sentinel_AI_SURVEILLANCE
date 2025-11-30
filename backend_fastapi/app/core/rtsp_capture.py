@@ -9,6 +9,8 @@ from datetime import datetime
 import numpy as np
 from loguru import logger
 import threading
+import time
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
 
 
 class RTSPCapture:
@@ -48,6 +50,47 @@ class RTSPCapture:
         self.error_count = 0
         self.actual_fps = 0.0
 
+    def _connect_with_timeout(self, timeout: int = 10) -> tuple[bool, Optional[np.ndarray]]:
+        """
+        Connexion RTSP avec timeout pour éviter le blocage
+
+        Args:
+            timeout: Timeout en secondes
+
+        Returns:
+            Tuple (success, first_frame)
+        """
+        def connect():
+            try:
+                cap = cv2.VideoCapture(self.rtsp_url, cv2.CAP_FFMPEG)
+                cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+                cap.set(cv2.CAP_PROP_FPS, self.target_fps)
+
+                if not cap.isOpened():
+                    return None, None
+
+                ret, frame = cap.read()
+                if not ret or frame is None:
+                    cap.release()
+                    return None, None
+
+                return cap, frame
+            except Exception as e:
+                logger.error(f"Connection error: {e}")
+                return None, None
+
+        with ThreadPoolExecutor(max_workers=1) as executor:
+            future = executor.submit(connect)
+            try:
+                cap, frame = future.result(timeout=timeout)
+                if cap is not None:
+                    self.capture = cap
+                    return True, frame
+                return False, None
+            except FuturesTimeoutError:
+                logger.error(f"Connection timeout after {timeout}s for {self.camera_id}")
+                return False, None
+
     def start(self) -> bool:
         """
         Démarrer la capture RTSP dans un thread séparé
@@ -60,24 +103,12 @@ class RTSPCapture:
             return True
 
         try:
-            # Ouvrir la connexion RTSP
-            logger.info(f"Connecting to RTSP stream: {self.camera_id}")
-            self.capture = cv2.VideoCapture(self.rtsp_url, cv2.CAP_FFMPEG)
+            # Ouvrir la connexion RTSP avec timeout
+            logger.info(f"Connecting to RTSP stream: {self.camera_id} (timeout: 10s)")
+            success, frame = self._connect_with_timeout(timeout=10)
 
-            # Configuration optimisée
-            self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)  # Buffer minimal pour réduire latence
-            self.capture.set(cv2.CAP_PROP_FPS, self.target_fps)
-
-            # Vérifier que la connexion fonctionne
-            if not self.capture.isOpened():
-                logger.error(f"Failed to open RTSP stream: {self.camera_id}")
-                return False
-
-            # Tester la lecture d'une frame
-            ret, frame = self.capture.read()
-            if not ret or frame is None:
-                logger.error(f"Failed to read first frame: {self.camera_id}")
-                self.capture.release()
+            if not success:
+                logger.error(f"Failed to connect to RTSP stream: {self.camera_id}")
                 return False
 
             logger.success(f"RTSP connection established: {self.camera_id} ({frame.shape[1]}x{frame.shape[0]})")
@@ -108,7 +139,7 @@ class RTSPCapture:
                 elapsed = (datetime.now() - last_capture_time).total_seconds()
                 if elapsed < self.frame_interval:
                     sleep_time = self.frame_interval - elapsed
-                    asyncio.run(asyncio.sleep(sleep_time))
+                    time.sleep(sleep_time)  # Utiliser time.sleep dans un thread
                     continue
 
                 last_capture_time = datetime.now()
@@ -149,7 +180,7 @@ class RTSPCapture:
             except Exception as e:
                 logger.error(f"Error in capture loop for {self.camera_id}: {e}")
                 self.error_count += 1
-                asyncio.run(asyncio.sleep(1))
+                time.sleep(1)  # Utiliser time.sleep dans un thread
 
         logger.info(f"Capture loop stopped for {self.camera_id}")
 
@@ -161,7 +192,7 @@ class RTSPCapture:
             if self.capture:
                 self.capture.release()
 
-            asyncio.run(asyncio.sleep(2))  # Attendre avant de reconnecter
+            time.sleep(2)  # Attendre avant de reconnecter
 
             self.capture = cv2.VideoCapture(self.rtsp_url, cv2.CAP_FFMPEG)
             self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)

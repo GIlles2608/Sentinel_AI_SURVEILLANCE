@@ -6,9 +6,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import uvicorn
+import asyncio
 
 from app.core.config import settings
+from app.core.logging_config import setup_logging
 from app.api.routes import auth, cameras, events, stats, websocket, sessions
+
+# Configurer le logging dès le démarrage
+setup_logging()
 from app.db.session import init_db, close_db, get_db
 from app.db.clickhouse import clickhouse_client
 from app.db.minio_storage import minio_storage
@@ -34,9 +39,24 @@ async def lifespan(app: FastAPI):
         await create_default_admin(db)
         # Charger les caméras depuis cameras.yaml
         await init_cameras_from_config(db)
-        # Démarrer automatiquement les caméras activées
-        await autostart_enabled_cameras(db)
         break  # Une seule itération pour obtenir la session
+
+    # Lancer l'autostart des caméras en arrière-plan (non-bloquant)
+    # Délai de 2 secondes pour laisser le serveur démarrer complètement
+    async def delayed_camera_autostart():
+        await asyncio.sleep(1)
+        print("Starting cameras asynchronously...")
+
+        async for db in get_db():
+            loop = asyncio.get_running_loop()
+            loop.run_in_executor(
+                None,
+                lambda: asyncio.run(autostart_enabled_cameras(db))
+            )
+            break
+
+    asyncio.create_task(delayed_camera_autostart())
+
 
     # Connecter ClickHouse (events) - Désactivé temporairement
     # await clickhouse_client.connect()

@@ -1,6 +1,5 @@
 /**
- * Page Dashboard - Vue principale conforme à la maquette v2.0
- * Design Sentinel IA - Strictement conforme au cahier des charges
+ * Dashboard - Sentinel AI Premium Design v3.0
  */
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +8,19 @@ import { fetchCameras, selectAllCameras, selectActiveCameras } from '../store/sl
 import { fetchEvents, selectFilteredEvents } from '../store/slices/eventsSlice';
 import { TopNavigationBar } from '../components/Layout';
 import { wsService } from '../services/websocket';
+import {
+  Activity,
+  Zap,
+  Shield,
+  TrendingUp,
+  Clock,
+  CheckCircle,
+  Video,
+  Plus,
+  Download,
+  Clock3,
+  Camera as CameraIcon
+} from 'lucide-react';
 import type { Event } from '../types';
 import './Dashboard.css';
 
@@ -138,139 +150,120 @@ export const Dashboard: React.FC = () => {
 
   return (
     <div className="dashboard-page">
-      {/* Top Navigation Bar */}
       <TopNavigationBar />
 
-      {/* Contenu principal */}
       <div className="dashboard-container">
-        {/* En-tête du dashboard */}
+        {/* Header */}
         <header className="dashboard-header">
           <div className="dashboard-header__content">
-            <h1 className="dashboard-header__title">Dashboard</h1>
-            <p className="dashboard-header__subtitle">
-              Vue d'ensemble en temps réel du système de surveillance
-            </p>
+            <div className="dashboard-header__text">
+              <h1 className="dashboard-header__title">Dashboard</h1>
+              <p className="dashboard-header__subtitle">
+                Vue d'ensemble en temps reel du systeme de surveillance
+              </p>
+            </div>
+            <div className="dashboard-header__actions">
+              <button className="dashboard-header__btn dashboard-header__btn--secondary">
+                <Download />
+                Exporter
+              </button>
+              <button className="dashboard-header__btn dashboard-header__btn--primary">
+                <Plus />
+                Ajouter camera
+              </button>
+            </div>
           </div>
         </header>
 
-        {/* Widgets statistiques */}
+        {/* Stats Cards */}
         <section className="dashboard-stats">
-          {/* Widget: Événements aujourd'hui */}
           <div className="stat-card">
             <div className="stat-card__header">
               <div className="stat-card__icon stat-card__icon--primary">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M10 2v20M3 8h18M3 16h18" strokeLinecap="round" />
-                </svg>
+                <Activity />
               </div>
-              <span className="stat-card__label">ÉVÉNEMENTS AUJOURD'HUI</span>
+              <span className="stat-card__label">Evenements</span>
             </div>
             <div className="stat-card__value">{stats.eventsToday}</div>
             <div className="stat-card__footer">
               <span className="stat-card__trend stat-card__trend--up">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="18 15 12 9 6 15" />
-                </svg>
-                Dernière heure
+                <TrendingUp />
+                Derniere heure
               </span>
             </div>
           </div>
 
-          {/* Widget: Caméras actives */}
           <div className="stat-card">
             <div className="stat-card__header">
               <div className="stat-card__icon stat-card__icon--success">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                  <circle cx="12" cy="13" r="4" />
-                </svg>
+                <Video />
               </div>
-              <span className="stat-card__label">CAMÉRAS ACTIVES</span>
+              <span className="stat-card__label">Cameras actives</span>
             </div>
             <div className="stat-card__value">
               {formatNumber(stats.activeCameras)}/{allCameras.length > 0 ? allCameras.length : 4}
             </div>
             <div className="stat-card__footer">
               <span className="stat-card__trend">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10" />
-                  <polyline points="12 6 12 12 16 14" />
-                </svg>
-                {stats.activeCameras > 0 ? '0% opérationnel' : 'Non spécifié'}
+                <Clock />
+                {stats.activeCameras > 0 ? '100% operationnel' : 'En attente'}
               </span>
             </div>
           </div>
 
-          {/* Widget: Détections/min */}
           <div className="stat-card">
             <div className="stat-card__header">
               <div className="stat-card__icon stat-card__icon--info">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <line x1="12" y1="1" x2="12" y2="23" />
-                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                </svg>
+                <Zap />
               </div>
-              <span className="stat-card__label">DÉTECTIONS/MIN</span>
+              <span className="stat-card__label">Detections/min</span>
             </div>
             <div className="stat-card__value">{stats.detectionsPerMinute}</div>
             <div className="stat-card__footer">
               <span className="stat-card__trend">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-                </svg>
-                Temps réel
+                <Activity />
+                Temps reel
               </span>
             </div>
           </div>
 
-          {/* Widget: Statut système */}
           <div className="stat-card">
             <div className="stat-card__header">
               <div className="stat-card__icon stat-card__icon--warning">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-                </svg>
+                <Shield />
               </div>
-              <span className="stat-card__label">STATUT SYSTÈME</span>
+              <span className="stat-card__label">Statut systeme</span>
             </div>
             <div className="stat-card__value">{stats.systemStatus}%</div>
             <div className="stat-card__footer">
-              <span className="stat-card__trend stat-card__trend--success">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                Opérationnel
+              <span className="stat-card__trend stat-card__trend--up">
+                <CheckCircle />
+                Operationnel
               </span>
             </div>
           </div>
         </section>
 
-        {/* Section Activité en Temps Réel */}
+        {/* Activity Section */}
         <section className="dashboard-content">
-          <h2 className="dashboard-section-title">Activité en Temps Réel</h2>
+          <h2 className="dashboard-section-title">Activite en temps reel</h2>
 
           <div className="dashboard-grid">
-            {/* Colonne gauche: Événements récents */}
+            {/* Events Panel */}
             <div className="dashboard-panel">
               <div className="panel-header">
-                <h3 className="panel-title">Événements Récents</h3>
-                <button
-                  className="panel-action"
-                  onClick={() => navigate('/events')}
-                >
-                  Voir tout →
+                <h3 className="panel-title">Evenements recents</h3>
+                <button className="panel-action" onClick={() => navigate('/events')}>
+                  Voir tout
                 </button>
               </div>
 
               <div className="panel-content">
                 {recentEvents.length === 0 ? (
                   <div className="empty-state">
-                    <svg className="empty-state__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10" />
-                      <path d="M12 6v6l4 2" />
-                    </svg>
-                    <p className="empty-state__text">Aucun événement</p>
-                    <p className="empty-state__subtext">Aucune activité récente</p>
+                    <Clock3 className="empty-state__icon" />
+                    <p className="empty-state__text">Aucun evenement</p>
+                    <p className="empty-state__subtext">Aucune activite recente detectee</p>
                   </div>
                 ) : (
                   <div className="events-list">
@@ -285,15 +278,11 @@ export const Dashboard: React.FC = () => {
                         <div className="event-item__content">
                           <div className="event-item__header">
                             <span className="event-item__type">{event.event_type}</span>
-                            <span className="event-item__time">
-                              {formatTime(event.timestamp)}
-                            </span>
+                            <span className="event-item__time">{formatTime(event.timestamp)}</span>
                           </div>
                           <p className="event-item__description">{event.description}</p>
                           {event.camera_id && (
-                            <span className="event-item__camera">
-                              📹 Caméra {event.camera_id}
-                            </span>
+                            <span className="event-item__camera">Camera {event.camera_id}</span>
                           )}
                         </div>
                         {!event.acknowledged && (
@@ -306,52 +295,31 @@ export const Dashboard: React.FC = () => {
               </div>
             </div>
 
-            {/* Colonne droite: État des caméras */}
+            {/* Cameras Panel */}
             <div className="dashboard-panel">
               <div className="panel-header">
-                <h3 className="panel-title">État des Caméras</h3>
-                <button
-                  className="panel-action"
-                  onClick={() => navigate('/cameras')}
-                >
-                  Gérer →
+                <h3 className="panel-title">Etat des cameras</h3>
+                <button className="panel-action" onClick={() => navigate('/cameras')}>
+                  Gerer
                 </button>
               </div>
 
               <div className="panel-content">
                 {allCameras.length === 0 ? (
                   <div className="empty-state">
-                    <svg className="empty-state__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                      <circle cx="12" cy="13" r="4" />
-                    </svg>
-                    <p className="empty-state__text">Aucune caméra</p>
-                    <p className="empty-state__subtext">Ajoutez des caméras pour commencer</p>
+                    <CameraIcon className="empty-state__icon" />
+                    <p className="empty-state__text">Aucune camera</p>
+                    <p className="empty-state__subtext">Ajoutez des cameras pour commencer</p>
                   </div>
                 ) : (
                   <div className="cameras-list">
-                    {/* Caméra exemple IMOU Principale */}
-                    <div className="camera-item">
-                      <div className="camera-item__status camera-item__status--offline"></div>
-                      <div className="camera-item__content">
-                        <div className="camera-item__header">
-                          <span className="camera-item__name">Caméra IMOU Principale</span>
-                          <span className="camera-item__badge camera-item__badge--offline">
-                            Non spécifié
-                          </span>
-                        </div>
-                        <p className="camera-item__fps">0 FPS</p>
-                      </div>
-                    </div>
-
-                    {/* Autres caméras depuis Redux si disponibles */}
-                    {allCameras.slice(0, 3).map((camera) => (
+                    {allCameras.slice(0, 4).map((camera) => (
                       <div key={camera.id} className="camera-item">
                         <div
                           className={`camera-item__status camera-item__status--${
                             camera.status === 'active' ? 'active' : 'offline'
                           }`}
-                        ></div>
+                        />
                         <div className="camera-item__content">
                           <div className="camera-item__header">
                             <span className="camera-item__name">{camera.name}</span>
@@ -360,7 +328,7 @@ export const Dashboard: React.FC = () => {
                                 camera.status === 'active' ? 'active' : 'offline'
                               }`}
                             >
-                              {camera.status === 'active' ? 'Active' : 'Inactive'}
+                              {camera.status === 'active' ? 'Active' : 'Hors ligne'}
                             </span>
                           </div>
                           <p className="camera-item__fps">

@@ -200,7 +200,28 @@ cameras:
 
 ## Étape 6 : Lancement complet
 
-### Ordre de démarrage recommandé :
+### Option A : Démarrage automatique (Recommandé)
+
+Utilisez le script de démarrage qui lance tous les services en une seule commande :
+
+**Windows (PowerShell):**
+```powershell
+.\scripts\start_sentinel.ps1
+```
+
+Ce script :
+- Libère automatiquement les ports occupés
+- Démarre MediaMTX, Backend et Frontend
+- Affiche un résumé avec toutes les URLs
+
+Pour arrêter tous les services :
+```powershell
+.\scripts\stop_sentinel.ps1
+```
+
+### Option B : Démarrage manuel
+
+Si vous préférez démarrer les services séparément :
 
 1. **MediaMTX** (serveur de streaming)
    ```bash
@@ -233,6 +254,34 @@ cameras:
 
 - **Utilisateur :** `admin`
 - **Mot de passe :** `admin123`
+
+---
+
+## Fichiers de logs
+
+Les logs des différents services sont enregistrés dans `shared/logs/` :
+
+| Service | Fichier | Description |
+|---------|---------|-------------|
+| Backend | `sentinel_api.log` | Tous les logs (rotation 10MB, 7 jours) |
+| Backend Erreurs | `sentinel_api_errors.log` | Erreurs uniquement (30 jours) |
+| MediaMTX | `mediamtx.log` | Logs du serveur de streaming |
+
+### Suivre les logs en temps réel
+
+**PowerShell:**
+```powershell
+# Logs backend
+Get-Content .\shared\logs\sentinel_api.log -Tail 50 -Wait
+
+# Logs MediaMTX
+Get-Content .\shared\logs\mediamtx.log -Tail 50 -Wait
+```
+
+**Git Bash / Linux:**
+```bash
+tail -f shared/logs/sentinel_api.log
+```
 
 ---
 
@@ -334,4 +383,4 @@ Une fois le système fonctionnel, vous pouvez :
 
 ---
 
-*Document mis à jour le 29 novembre 2025*
+*Document mis à jour le 30 novembre 2025*

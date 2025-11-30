@@ -73,7 +73,7 @@ export const HLSPlayer: React.FC<HLSPlayerProps> = ({
           console.log('[HLS] Media attached');
         });
 
-        hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+        hls.on(Hls.Events.MANIFEST_PARSED, (_event, data) => {
           console.log('[HLS] Manifest parsed, found', data.levels.length, 'quality levels');
           setIsLoading(false);
           if (autoplay) {
@@ -83,7 +83,7 @@ export const HLSPlayer: React.FC<HLSPlayerProps> = ({
           }
         });
 
-        hls.on(Hls.Events.ERROR, (event, data) => {
+        hls.on(Hls.Events.ERROR, (_event, data) => {
           console.error('[HLS] Error:', data);
           if (data.fatal) {
             switch (data.type) {
@@ -120,7 +120,7 @@ export const HLSPlayer: React.FC<HLSPlayerProps> = ({
             });
           }
         });
-        videoRef.current.addEventListener('error', (e) => {
+        videoRef.current.addEventListener('error', () => {
           const err = new Error('HLS playback error');
           setError(err.message);
           setIsLoading(false);

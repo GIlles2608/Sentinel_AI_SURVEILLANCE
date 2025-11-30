@@ -60,6 +60,9 @@ const CameraCard: React.FC<CameraCardProps> = ({ camera, isSelected, onSelect })
     }
   };
 
+  // Note: handleStopCamera sera utilisé plus tard pour un bouton stop
+  void handleStopCamera;
+
   return (
     <div
       className={`camera-card ${isSelected ? 'camera-card--selected' : ''} ${camera.status !== 'active' ? 'camera-card--offline' : ''}`}
@@ -178,7 +181,7 @@ const CameraCard: React.FC<CameraCardProps> = ({ camera, isSelected, onSelect })
             <circle cx="12" cy="12" r="10" />
             <polyline points="12 6 12 12 16 14" />
           </svg>
-          <span>Dernière activité: {formatLastSeen(camera.last_seen)}</span>
+          <span>Dernière activité: {formatLastSeen(camera.last_seen || camera.created_at)}</span>
         </div>
       </div>
     </div>

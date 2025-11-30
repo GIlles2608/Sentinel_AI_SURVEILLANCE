@@ -14,6 +14,7 @@ export interface Camera {
   fps: number;
   created_at: string;
   last_seen?: string;
+  is_recording?: boolean;
 }
 
 export type CameraStatus = 'active' | 'inactive' | 'error' | 'connecting';

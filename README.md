@@ -49,6 +49,8 @@ Sentinel/
 │   └── models/             # Modèles IA (YOLOv8)
 │
 ├── scripts/                # Scripts utilitaires
+│   ├── start_sentinel.ps1  # Demarrage complet (tous services)
+│   ├── stop_sentinel.ps1   # Arret complet
 │   ├── download_mediamtx.ps1
 │   └── start_mediamtx.ps1
 │
@@ -73,28 +75,41 @@ Sentinel/
 
 Consultez le [Guide de Prise en Main](docs/GETTING_STARTED.md) pour les instructions détaillées.
 
-**Résumé :**
+### Demarrage rapide (PowerShell)
 
-```bash
-# 1. Backend
-cd backend_fastapi
-python -m venv venv
-.\venv\Scripts\activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
+```powershell
+# Installation initiale (une seule fois)
+cd backend_fastapi && python -m venv venv && .\venv\Scripts\activate && pip install -r requirements.txt
+cd ../frontend && npm install
 
-# 2. MediaMTX (dans un autre terminal)
-cd mediamtx
-./mediamtx
+# Demarrage de tous les services
+.\scripts\start_sentinel.ps1
 
-# 3. Frontend (dans un autre terminal)
-cd frontend
-npm install
-npm run dev
+# Arret de tous les services
+.\scripts\stop_sentinel.ps1
 ```
 
-**Accès :** http://localhost:5173
+### Demarrage manuel (3 terminaux)
+
+```bash
+# Terminal 1 - MediaMTX
+cd mediamtx && ./mediamtx
+
+# Terminal 2 - Backend
+cd backend_fastapi && .\venv\Scripts\activate && uvicorn app.main:app --port 8000
+
+# Terminal 3 - Frontend
+cd frontend && npm run dev
+```
+
+**Acces :** http://localhost:5173
 **Connexion :** `admin` / `admin123`
+
+### Logs
+
+Les logs sont enregistres dans `shared/logs/` :
+- `sentinel_api.log` - Backend FastAPI
+- `mediamtx.log` - Serveur de streaming
 
 ---
 
@@ -186,4 +201,4 @@ Projet privé - Sentinel IA
 ---
 
 **Version :** 2.0.0-dev
-**Dernière mise à jour :** 29 novembre 2025
+**Derniere mise a jour :** 30 novembre 2025

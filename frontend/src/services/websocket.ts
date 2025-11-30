@@ -2,7 +2,7 @@
  * Service WebSocket pour la communication temps réel
  */
 import { io, Socket } from 'socket.io-client';
-import type { WebSocketMessage, Camera, Event, CameraStats } from '../types';
+import type { Camera, Event, CameraStats } from '../types';
 
 const WS_URL = import.meta.env.VITE_WS_URL || 'http://localhost:5000';
 
